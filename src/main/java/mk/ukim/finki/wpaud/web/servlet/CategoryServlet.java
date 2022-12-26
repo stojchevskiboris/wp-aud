@@ -1,17 +1,17 @@
 package mk.ukim.finki.wpaud.web.servlet;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import mk.ukim.finki.wpaud.model.Category;
+
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import mk.ukim.finki.wpaud.service.CategoryService;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
+
 
 @WebServlet(name = "category-servlet", urlPatterns = "/servlet/category")
 public class CategoryServlet extends HttpServlet {
@@ -23,7 +23,7 @@ public class CategoryServlet extends HttpServlet {
 
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException, IOException {
         String ipAddr = req.getRemoteAddr();
         String clientAgent = req.getHeader("User-Agent");
         PrintWriter out = resp.getWriter();

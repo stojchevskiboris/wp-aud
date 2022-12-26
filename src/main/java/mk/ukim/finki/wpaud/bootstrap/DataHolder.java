@@ -1,6 +1,6 @@
 package mk.ukim.finki.wpaud.bootstrap;
 
-import jakarta.annotation.PostConstruct;
+import javax.annotation.PostConstruct;
 import mk.ukim.finki.wpaud.model.Category;
 import org.springframework.stereotype.Component;
 
