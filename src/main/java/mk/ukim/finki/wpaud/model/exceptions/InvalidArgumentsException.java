@@ -2,6 +2,6 @@ package mk.ukim.finki.wpaud.model.exceptions;
 
 public class InvalidArgumentsException extends RuntimeException{
     public InvalidArgumentsException(){
-        super("Invalid agruments exception");
+        super("Invalid arguments exception");
     }
 }

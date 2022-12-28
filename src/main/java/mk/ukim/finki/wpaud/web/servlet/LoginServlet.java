@@ -1,6 +1,7 @@
 package mk.ukim.finki.wpaud.web.servlet;
 
 import mk.ukim.finki.wpaud.model.User;
+import mk.ukim.finki.wpaud.model.exceptions.InvalidArgumentsException;
 import mk.ukim.finki.wpaud.model.exceptions.InvalidUserCredentialsException;
 import mk.ukim.finki.wpaud.service.AuthService;
 import org.thymeleaf.context.WebContext;
@@ -13,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(name="LoginServlet", urlPatterns = "/login")
+@WebServlet(name = "LoginServlet", urlPatterns = "/login")
 public class LoginServlet extends HttpServlet {
 
     private final SpringTemplateEngine springTemplateEngine;
@@ -26,8 +27,8 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        WebContext context = new WebContext(req,resp,req.getServletContext());
-        springTemplateEngine.process("login.html",context,resp.getWriter());
+        WebContext context = new WebContext(req, resp, req.getServletContext());
+        springTemplateEngine.process("login.html", context, resp.getWriter());
     }
 
     @Override
@@ -38,14 +39,16 @@ public class LoginServlet extends HttpServlet {
         User user = null;
         try {
             user = authService.login(username,password);
-        } catch (InvalidUserCredentialsException ex) {
+        } catch (InvalidUserCredentialsException | InvalidArgumentsException ex ) {
             WebContext context = new WebContext(req,resp,req.getServletContext());
             context.setVariable("hasError",true);
             context.setVariable("error",ex.getMessage());
             springTemplateEngine.process("login.html",context,resp.getWriter());
+            return;
         }
         req.getSession().setAttribute("user",user);
         resp.sendRedirect("/servlet/thymeleaf/category");
+
     }
 }
 

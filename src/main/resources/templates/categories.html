@@ -8,9 +8,9 @@
 <h2>Info about our request</h2>
 <div>IP Address:<th:block th:text="${ipAddress}"></th:block></div>
 <div>Client Agent:<th:block th:text="${clientAgent}"></th:block></div>
-<th:block th:if="${session.user==null}">
-    <a href="/login">Login</a>
-</th:block>
+<!--<th:block th:if="${session.user==null}">-->
+<!--    <a href="/login">Login</a>-->
+<!--</th:block>-->
 <th:block th:if="${session.user!=null}">
 <h2>Info about our user</h2>
 <div>Username: <th:block th:text="${session.user.username}"></th:block></div>
