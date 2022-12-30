@@ -17,13 +17,17 @@ public class InMemoryCategoryRepository {
     public Category save(Category c){
         if(c==null || c.getName()==null || c.getName().isEmpty())
             return null;
-        DataHolder.categories.removeIf(r->r.getName()==(c.getName()));
+        DataHolder.categories.removeIf(r->r.getName().equals(c.getName()));
         DataHolder.categories.add(c);
         return c;
     }
     public Optional<Category> findByName(String name){
-        return DataHolder.categories.stream().filter(r->r.getName()==name).findFirst();
+        return DataHolder.categories.stream().filter(r->r.getName().equals(name)).findFirst();
     }
+    public Optional<Category> findById(Long id){
+        return DataHolder.categories.stream().filter(r->r.getId().equals(id)).findFirst();
+    }
+
     public List<Category> search(String text){
         return DataHolder.categories.stream().filter(r->r.getName().contains(text)
                 || r.getDescription().contains(text)).collect(Collectors.toList());
@@ -31,6 +35,6 @@ public class InMemoryCategoryRepository {
     public void delete(String name){
         if(name==null)
             return;
-        DataHolder.categories.removeIf(r->r.getName()==name);
+        DataHolder.categories.removeIf(r->r.getName().equals(name));
     }
 }
