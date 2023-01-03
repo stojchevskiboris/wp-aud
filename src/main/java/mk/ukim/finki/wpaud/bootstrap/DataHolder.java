@@ -28,6 +28,8 @@ public class DataHolder {
 
         Manufacturer manufacturer = new Manufacturer("Nike", "NY NY");
         manufacturers.add(manufacturer);
+        manufacturers.add(new Manufacturer("Adidas", "CA CA"));
+        manufacturers.add(new Manufacturer("Puma", "FL FL"));
 
         Category category = new Category("Sport", "Sports category");
         products.add(new Product("Ball", 235.8, 7, category, manufacturer));
