@@ -14,13 +14,12 @@ public class Category {
     @Column(length = 4000)
     private String description;
 
+    public Category() {}
+
     public Category(String name, String description) {
-        this.id = (long) (Math.random()*1000);
         this.name = name;
         this.description = description;
     }
 
-    public Category() {
 
-    }
 }

@@ -1,7 +1,8 @@
 package mk.ukim.finki.wpaud.service.impl;
 
 import mk.ukim.finki.wpaud.model.Category;
-import mk.ukim.finki.wpaud.repository.InMemoryCategoryRepository;
+import mk.ukim.finki.wpaud.repository.impl.InMemoryCategoryRepository;
+import mk.ukim.finki.wpaud.repository.jpa.CategoryRepository;
 import mk.ukim.finki.wpaud.service.CategoryService;
 import org.springframework.stereotype.Service;
 
@@ -9,15 +10,17 @@ import java.util.List;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
-    private final InMemoryCategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
-    public CategoryServiceImpl(InMemoryCategoryRepository categoryRepository){
+    public CategoryServiceImpl(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
+
     @Override
     public Category create(String name, String description) {
-        if(name==null || name.isEmpty())
+        if (name==null || name.isEmpty()) {
             throw new IllegalArgumentException();
+        }
         Category c = new Category(name,description);
         categoryRepository.save(c);
         return c;
@@ -25,18 +28,20 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category update(String name, String description) {
-        if(name==null || name.isEmpty())
+        if (name==null || name.isEmpty()) {
             throw new IllegalArgumentException();
-        Category c = new Category(name,description);
+        }
+        Category c= new Category(name,description);
         categoryRepository.save(c);
         return c;
     }
 
     @Override
     public void delete(String name) {
-        if(name==null || name.isEmpty())
+        if (name==null || name.isEmpty()) {
             throw new IllegalArgumentException();
-        categoryRepository.delete(name);
+        }
+        categoryRepository.deleteByName(name);
     }
 
     @Override
@@ -46,6 +51,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> searchCategories(String searchText) {
-        return categoryRepository.search(searchText);
+        return categoryRepository.findAllByNameLike(searchText);
     }
+
 }

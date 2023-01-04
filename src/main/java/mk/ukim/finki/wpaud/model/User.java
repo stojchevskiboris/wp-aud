@@ -17,6 +17,8 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<ShoppingCart> carts;
 
+    public User() {}
+
     public User(String username, String password, String name, String surname) {
         this.username = username;
         this.password = password;
@@ -24,7 +26,4 @@ public class User {
         this.surname = surname;
     }
 
-    public User() {
-
-    }
 }

@@ -21,7 +21,6 @@ public class ManufacturerController {
         return this.manufacturerService.findAll();
     }
 
-
     @GetMapping("/{id}")
     public ResponseEntity<Manufacturer> findById(@PathVariable Long id) {
         return this.manufacturerService.findById(id)
@@ -37,8 +36,10 @@ public class ManufacturerController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity delete(@PathVariable Long id){
-        if(this.manufacturerService.deleteById(id)) return ResponseEntity.ok().build();
+    public ResponseEntity deleteById(@PathVariable Long id) {
+        this.manufacturerService.deleteById(id);
+        if(this.manufacturerService.findById(id).isEmpty()) return ResponseEntity.ok().build();
         return ResponseEntity.badRequest().build();
     }
+
 }

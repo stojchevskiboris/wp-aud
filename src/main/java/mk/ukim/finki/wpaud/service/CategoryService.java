@@ -14,4 +14,6 @@ public interface CategoryService {
     List<Category> listCategories();
 
     List<Category> searchCategories(String searchText);
+
+
 }
