@@ -6,6 +6,14 @@ import mk.ukim.finki.wpaud.model.Product;
 import mk.ukim.finki.wpaud.service.CategoryService;
 import mk.ukim.finki.wpaud.service.ManufacturerService;
 import mk.ukim.finki.wpaud.service.ProductService;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +28,9 @@ public class ProductController {
     private final CategoryService categoryService;
     private final ManufacturerService manufacturerService;
 
-    public ProductController(ProductService productService, CategoryService categoryService, ManufacturerService manufacturerService) {
+    public ProductController(ProductService productService,
+                             CategoryService categoryService,
+                             ManufacturerService manufacturerService) {
         this.productService = productService;
         this.categoryService = categoryService;
         this.manufacturerService = manufacturerService;
@@ -28,9 +38,9 @@ public class ProductController {
 
     @GetMapping
     public String getProductPage(@RequestParam(required = false) String error, Model model) {
-        if(error != null && !error.isEmpty()){
-            model.addAttribute("hasError",true);
-            model.addAttribute("error",error);
+        if(error != null && !error.isEmpty()) {
+            model.addAttribute("hasError", true);
+            model.addAttribute("error", error);
         }
         List<Product> products = this.productService.findAll();
         model.addAttribute("products", products);
@@ -44,28 +54,30 @@ public class ProductController {
         return "redirect:/products";
     }
 
-    @GetMapping("/add-form")
-    public String addProductPage(Model model) {
-        List<Category> categories = this.categoryService.listCategories();
-        List<Manufacturer> manufacturers = this.manufacturerService.findAll();
-        model.addAttribute("categories", categories);
-        model.addAttribute("manufacturers", manufacturers);
-        model.addAttribute("bodyContent","add-product");
-        return "master-template";
-    }
-
     @GetMapping("/edit-form/{id}")
-    public String editProductPage(@PathVariable Long id, Model model){
+    public String editProductPage(@PathVariable Long id, Model model) {
         if(this.productService.findById(id).isPresent()){
             Product product = this.productService.findById(id).get();
-            List<Category> categories = this.categoryService.listCategories();
             List<Manufacturer> manufacturers = this.manufacturerService.findAll();
-            model.addAttribute("categories", categories);
+            List<Category> categories = this.categoryService.listCategories();
             model.addAttribute("manufacturers", manufacturers);
-            model.addAttribute("product",product);
-            return "add-product";
+            model.addAttribute("categories", categories);
+            model.addAttribute("product", product);
+            model.addAttribute("bodyContent","add-product");
+            return "master-template";
         }
         return "redirect:/products?error=ProductNotFound";
+    }
+
+    @GetMapping("/add-form")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String addProductPage(Model model) {
+        List<Manufacturer> manufacturers = this.manufacturerService.findAll();
+        List<Category> categories = this.categoryService.listCategories();
+        model.addAttribute("manufacturers", manufacturers);
+        model.addAttribute("categories", categories);
+        model.addAttribute("bodyContent","add-product");
+        return "master-template";
     }
 
     @PostMapping("/add")
@@ -74,8 +86,8 @@ public class ProductController {
                               @RequestParam Integer quantity,
                               @RequestParam Long category,
                               @RequestParam Long manufacturer){
-        this.productService.save(name,price,quantity,category,manufacturer);
+        this.productService.save(name, price, quantity, category, manufacturer);
         return "redirect:/products";
     }
-
 }
+

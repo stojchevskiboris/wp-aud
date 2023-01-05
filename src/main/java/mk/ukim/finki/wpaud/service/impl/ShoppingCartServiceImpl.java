@@ -40,7 +40,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCart getActiveShoppingCart(String username) {
-        User user = (User) this.userRepository.findByUsername(username)
+        User user = this.userRepository.findByUsername(username)
                 .orElseThrow(() -> new UserNotFoundException(username));
 
         return this.shoppingCartRepository
@@ -49,7 +49,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                     ShoppingCart cart = new ShoppingCart(user);
                     return this.shoppingCartRepository.save(cart);
                 });
-
     }
 
     @Override
@@ -64,5 +63,5 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         shoppingCart.getProducts().add(product);
         return this.shoppingCartRepository.save(shoppingCart);
     }
-
 }
+

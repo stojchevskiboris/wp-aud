@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 @Controller
 @RequestMapping("/login")
-public class LoginController{
+public class LoginController {
+
     private final AuthService authService;
 
     public LoginController(AuthService authService) {
@@ -22,24 +22,24 @@ public class LoginController{
     }
 
     @GetMapping
-    public String getLoginPage(Model model){
+    public String getLoginPage(Model model) {
         model.addAttribute("bodyContent","login");
         return "master-template";
     }
 
     @PostMapping
-    public String login(HttpServletRequest request, Model model){
+    public String login(HttpServletRequest request, Model model) {
         User user = null;
-        try {
-            user = this.authService.login(request.getParameter("username"),request.getParameter("password"));
-            request.getSession().setAttribute("user",user);
+        try{
+            user = this.authService.login(request.getParameter("username"),
+                    request.getParameter("password"));
+            request.getSession().setAttribute("user", user);
             return "redirect:/home";
-        } catch (InvalidUserCredentialsException ex){
-            model.addAttribute("hasError",true);
-            model.addAttribute("error",ex.getMessage());
-            model.addAttribute("bodyContent","login");
-            return "master-template";
-
+        }
+        catch (InvalidUserCredentialsException exception) {
+            model.addAttribute("hasError", true);
+            model.addAttribute("error", exception.getMessage());
+            return "login";
         }
     }
 }

@@ -5,7 +5,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(code = HttpStatus.NOT_FOUND)
 public class ManufacturerNotFoundException extends RuntimeException{
-    public ManufacturerNotFoundException(Long id){
-        super(String.format("Manufacturer with id %s was not found", id));
+
+    public ManufacturerNotFoundException(Long id) {
+        super(String.format("Manufacturer with id: %d was not found", id));
     }
 }
+

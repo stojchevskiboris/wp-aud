@@ -6,10 +6,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/manufacturers")
 public class ManufacturerController {
+
     private final ManufacturerService manufacturerService;
 
     public ManufacturerController(ManufacturerService manufacturerService) {
@@ -41,5 +46,4 @@ public class ManufacturerController {
         if(this.manufacturerService.findById(id).isEmpty()) return ResponseEntity.ok().build();
         return ResponseEntity.badRequest().build();
     }
-
 }

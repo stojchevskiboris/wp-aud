@@ -11,6 +11,7 @@ import java.util.Optional;
 
 @Service
 public class ManufacturerServiceImpl implements ManufacturerService {
+
     private final ManufacturerRepository manufacturerRepository;
 
     public ManufacturerServiceImpl(ManufacturerRepository manufacturerRepository) {
@@ -36,6 +37,6 @@ public class ManufacturerServiceImpl implements ManufacturerService {
     public void deleteById(Long id) {
         this.manufacturerRepository.deleteById(id);
     }
-
-
 }
+
+

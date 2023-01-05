@@ -1,36 +1,33 @@
-<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
     <title>Categories</title>
+    <meta charset="utf-8"/>
 </head>
 <body>
 <h2>Info about our request</h2>
-<div>IP Address:<th:block th:text="${ipAddress}"></th:block></div>
-<div>Client Agent:<th:block th:text="${clientAgent}"></th:block></div>
-<!--<th:block th:if="${session.user==null}">-->
-<!--    <a href="/login">Login</a>-->
-<!--</th:block>-->
+<div th:text="${ipAddress}"></div>
+<div th:text="${clientAgent}"></div>
+
 <th:block th:if="${session.user!=null}">
-<h2>Info about our user</h2>
-<div>Username: <th:block th:text="${session.user.username}"></th:block></div>
-<div>Name: <th:block th:text="${session.user.name}"></th:block></div>
-<div>Surname: <th:block th:text="${session.user.surname}"></th:block></div>
-<div>
-    <a href="/logout">Logout</a>
-</div>
+    <h2>Info about user</h2>
+    <div th:text="${session.user.username}"></div>
+    <div th:text="${session.user.name}"></div>
+    <div th:text="${session.user.surname}"></div>
+    <div>
+        <a href="/logout">Logout</a>
+    </div>
 </th:block>
-    <h2>Categories</h2>
+
+<h2>Categories</h2>
 <ul>
-  <li th:each="category : ${categories}"><th:block th:text="${category.name}"></th:block></li>
+    <li th:each="category: ${categories}"><th:block th:text="${category.name}"/> (<th:block th:text="${category.description}"/>)</li>
 </ul>
-<h3>Add new category</h3>
+
+<h3>Add New Category</h3>
 <form th:action="@{/servlet/thymeleaf/category}" th:method="POST">
-  <label for='name'>Name:</label><br>
-  <input id='name' type='text' name='name'/><br><br>
-  <label for='description'>Description:</label><br>
-  <input id='description' type='text' name='description'/><br><br>
-  <input type='submit' value='Submit'/>
+    <label for='name'>Name:</label>:<input id='name' type='text' name='name'/>
+    <label for='desc'>Description:</label>:<input id='desc' type='text' name='description'/>
+    <input type='submit' value='Submit'/>
 </form>
 </body>
 </html>

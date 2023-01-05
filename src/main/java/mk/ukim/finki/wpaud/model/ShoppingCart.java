@@ -1,5 +1,4 @@
 package mk.ukim.finki.wpaud.model;
-
 import lombok.Data;
 import mk.ukim.finki.wpaud.model.enumerations.ShoppingCartStatus;
 
@@ -11,19 +10,24 @@ import java.util.List;
 @Data
 @Entity
 public class ShoppingCart {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private LocalDateTime dateCreated;
+
     @ManyToOne
     private User user;
+
     @ManyToMany
     private List<Product> products;
+
     @Enumerated(EnumType.STRING)
     private ShoppingCartStatus status;
 
-
-    public ShoppingCart() {}
+    public ShoppingCart() {
+    }
 
     public ShoppingCart(User user) {
         this.dateCreated = LocalDateTime.now();
@@ -31,5 +35,5 @@ public class ShoppingCart {
         this.products = new ArrayList<>();
         this.status = ShoppingCartStatus.CREATED;
     }
-
 }
+
