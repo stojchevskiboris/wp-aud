@@ -38,13 +38,13 @@ public class ProductController {
 
     @GetMapping
     public String getProductPage(@RequestParam(required = false) String error, Model model) {
-        if(error != null && !error.isEmpty()) {
+        if (error != null && !error.isEmpty()) {
             model.addAttribute("hasError", true);
             model.addAttribute("error", error);
         }
         List<Product> products = this.productService.findAll();
         model.addAttribute("products", products);
-        model.addAttribute("bodyContent","products");
+        model.addAttribute("bodyContent", "products");
         return "master-template";
     }
 
@@ -56,14 +56,14 @@ public class ProductController {
 
     @GetMapping("/edit-form/{id}")
     public String editProductPage(@PathVariable Long id, Model model) {
-        if(this.productService.findById(id).isPresent()){
+        if (this.productService.findById(id).isPresent()) {
             Product product = this.productService.findById(id).get();
             List<Manufacturer> manufacturers = this.manufacturerService.findAll();
             List<Category> categories = this.categoryService.listCategories();
             model.addAttribute("manufacturers", manufacturers);
             model.addAttribute("categories", categories);
             model.addAttribute("product", product);
-            model.addAttribute("bodyContent","add-product");
+            model.addAttribute("bodyContent", "add-product");
             return "master-template";
         }
         return "redirect:/products?error=ProductNotFound";
@@ -76,18 +76,25 @@ public class ProductController {
         List<Category> categories = this.categoryService.listCategories();
         model.addAttribute("manufacturers", manufacturers);
         model.addAttribute("categories", categories);
-        model.addAttribute("bodyContent","add-product");
+        model.addAttribute("bodyContent", "add-product");
         return "master-template";
     }
 
     @PostMapping("/add")
-    public String saveProduct(@RequestParam String name,
-                              @RequestParam Double price,
-                              @RequestParam Integer quantity,
-                              @RequestParam Long category,
-                              @RequestParam Long manufacturer){
-        this.productService.save(name, price, quantity, category, manufacturer);
+    public String saveProduct(
+            @RequestParam(required = false) Long id,
+            @RequestParam String name,
+            @RequestParam Double price,
+            @RequestParam Integer quantity,
+            @RequestParam Long category,
+            @RequestParam Long manufacturer) {
+        if (id != null) {
+            this.productService.edit(id, name, price, quantity, category, manufacturer);
+        } else {
+            this.productService.save(name, price, quantity, category, manufacturer);
+        }
         return "redirect:/products";
     }
+
 }
 
