@@ -105,6 +105,7 @@ class App extends Component {
         EshopService.editProduct(id, name, price, quantity, category, manufacturer)
             .then(() => {
                 this.loadProducts();
+
             });
     }
 }
