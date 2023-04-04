@@ -11,7 +11,7 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 @RestController
-//@CrossOrigin(origins = "https://fcse-emt-frontend.herokuapp.com")
+@CrossOrigin(origins = "https://localhost:3000")
 @RequestMapping("/api/discounts")
 public class DiscountRestController {
 
