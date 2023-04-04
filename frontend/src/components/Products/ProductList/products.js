@@ -1,5 +1,6 @@
 import React from "react";
 import ProductItem from "../ProductItem/productItem";
+import {Link} from "react-router-dom";
 
 const products = (props) => {
     return(
@@ -19,11 +20,18 @@ const products = (props) => {
                         <tbody>
                         {props.products.map((item)=> {
                             return(
-                                <ProductItem item={item}/>
+                                <ProductItem item={item} onDelete={props.onDelete} onEdit={props.onEdit}/>
                             );
                         })}
                         </tbody>
                     </table>
+                </div>
+                <div className="col mb-3">
+                    <div className="row">
+                        <div className="col-sm-12 col-md-12">
+                            <Link className={"btn btn-block btn-dark"} to={"/products/add"}>Add new product</Link>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

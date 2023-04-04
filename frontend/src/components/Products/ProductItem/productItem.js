@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from "react-router-dom";
 
 const productItem = (props) => {
     return (
@@ -8,6 +9,20 @@ const productItem = (props) => {
             <td scope={"col"}>{props.item.quantity}</td>
             <td scope={"col"}>{props.item.category.name}</td>
             <td scope={"col"}>{props.item.manufacturer.name}</td>
+            <td scope={"col"} className={"text-right"}>
+                <Link title={"Edit"}
+                      className={"btn btn-info"}
+                      onClick={() => props.onEdit(props.item.id)}
+                      to={`/products/edit/${props.item.id}`}>
+                    Edit
+                </Link>
+                <Link title={"Delete"}
+                    className={"btn btn-danger"}
+                    onClick={() => props.onDelete(props.item.id)}>
+                        Delete
+                </Link>
+
+            </td>
         </tr>
     )
 }
