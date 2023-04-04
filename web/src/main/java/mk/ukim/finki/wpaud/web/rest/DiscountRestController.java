@@ -21,7 +21,7 @@ public class DiscountRestController {
         this.discountService = discountService;
     }
 
-    @GetMapping("/")
+    @GetMapping
     public List<Discount> findAll() {
         return this.discountService.findAll();
     }
