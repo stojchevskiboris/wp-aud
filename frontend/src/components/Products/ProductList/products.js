@@ -45,13 +45,15 @@ class Products extends React.Component {
                                    nextLabel={"Next"}
                                    breakLabel={<a href="/#">...</a>}
                                    breakClassName={"break-me"}
-                                   pageClassName={"m-1 active"}
+                                   pageClassName={"m-1 active user-select-none"}
                                    pageCount={pageCount}
                                    marginPagesDisplayed={2}
                                    pageRangeDisplayed={5}
                                    onPageChange={this.handlePageClick}
-                                   containerClassName={"pagination m-3 justify-content-center"}
-                                   activeClassName={"border border-primary rounded-1"}/>
+                                   containerClassName={"pagination m-2 justify-content-center"}
+                                   activeClassName={"border border-dark rounded-1"}
+                                   nextLinkClassName={"btn"}
+                                   previousLinkClassName={"btn"}/>
                     <div className="col mb-3">
                         <div className="row">
                             <div className="col-sm-12 col-md-12">

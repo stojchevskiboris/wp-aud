@@ -3,6 +3,7 @@ package mk.ukim.finki.wpaud.web.rest;
 import mk.ukim.finki.wpaud.model.Manufacturer;
 import mk.ukim.finki.wpaud.service.ManufacturerService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public class ManufacturerController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<Manufacturer> findAll() {
         return this.manufacturerService.findAll();
     }
