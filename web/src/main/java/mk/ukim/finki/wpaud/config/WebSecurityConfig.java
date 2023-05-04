@@ -1,6 +1,9 @@
 package mk.ukim.finki.wpaud.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import mk.ukim.finki.wpaud.config.filters.JWTAuthorizationFilter;
+import mk.ukim.finki.wpaud.config.filters.JWTAuthenticationFilter;
+import mk.ukim.finki.wpaud.service.UserService;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -10,7 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Profile("stateful-auth")
+@Profile("session")
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
@@ -18,11 +21,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final PasswordEncoder passwordEncoder;
     private final CustomUsernamePasswordAuthenticationProvider authenticationProvider;
+    private final UserService userService;
 
     public WebSecurityConfig(PasswordEncoder passwordEncoder,
-                             CustomUsernamePasswordAuthenticationProvider authenticationProvider) {
+                             CustomUsernamePasswordAuthenticationProvider authenticationProvider, UserService userService) {
         this.passwordEncoder = passwordEncoder;
         this.authenticationProvider = authenticationProvider;
+        this.userService = userService;
     }
 
     @Override
@@ -30,7 +35,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/home", "/assets/**","/api/**", "/register", "/products").permitAll()
+                .antMatchers("/", "/home", "/assets/**", "/register", "/products", "/api/login","/api/products", "/login").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest()
                 .authenticated()
@@ -46,22 +51,34 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .invalidateHttpSession(true)
                 .deleteCookies("JSESSIONID")
                 .logoutSuccessUrl("/login")
-                .and()
-                .exceptionHandling().accessDeniedPage("/access_denied");
 
+                .and()
+                .addFilter(this.authenticationFilter())
+                .addFilter(this.authorizationFilter())
+                .exceptionHandling().accessDeniedPage("/access_denied");
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) {
 //        auth.inMemoryAuthentication()
-//                .withUser("boris.stojchevski")
-//                .password(passwordEncoder.encode("bs"))
+//                .withUser("kostadin.mishev")
+//                .password(passwordEncoder.encode("km"))
 //                .authorities("ROLE_USER")
 //                .and()
 //                .withUser("admin")
 //                .password(passwordEncoder.encode("admin"))
 //                .authorities("ROLE_ADMIN");
         auth.authenticationProvider(authenticationProvider);
+    }
+
+    @Bean
+    public JWTAuthorizationFilter authorizationFilter() throws Exception {
+        return new JWTAuthorizationFilter(authenticationManager(), userService);
+    }
+
+    @Bean
+    public JWTAuthenticationFilter authenticationFilter() throws Exception {
+        return new JWTAuthenticationFilter(authenticationManager(), userService, passwordEncoder);
     }
 
 
