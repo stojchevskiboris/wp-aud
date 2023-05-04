@@ -139,7 +139,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void refreshMaterializedView() {
-        this.productsPerManufacturerViewRepository.refreshMaterializedView();
+        // this.productsPerManufacturerViewRepository.refreshMaterializedView();
     }
 
 }

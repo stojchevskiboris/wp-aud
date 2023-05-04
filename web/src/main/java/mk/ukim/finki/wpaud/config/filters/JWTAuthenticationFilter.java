@@ -23,6 +23,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @AllArgsConstructor
@@ -36,7 +37,10 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         User creds = null;
         try {
-            creds = new ObjectMapper().readValue(request.getInputStream(), User.class);
+            String text = new String(request.getInputStream().readAllBytes(), StandardCharsets.UTF_8);
+            System.out.println(text);
+            creds = new ObjectMapper().readValue(text, User.class);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
